@@ -6,7 +6,7 @@ export type SkillGroup = {
 const skillsData: SkillGroup[] = [
 	{
 		category: "Programming Languages",
-		items: ["C", "C++", "Python", "JavaScript", "TypeScript", "Go"]
+		items: ["C", "C++", "Python", "JavaScript", "Go"]
 	},
 	{
 		category: "Backend & Systems",
@@ -14,7 +14,8 @@ const skillsData: SkillGroup[] = [
 			"Flask",
 			"Node.js",
 			"Express.js",
-			"SvelteKit"
+			"SvelteKit",
+			"Go Chi"
 		]
 	},
 	{
@@ -24,7 +25,8 @@ const skillsData: SkillGroup[] = [
 			"CSS3",
 			"Bootstrap",
 			"React.js",
-			"Svelte"
+			"Svelte",
+			"TypeScript"
 		]
 	},
 	{
@@ -40,6 +42,9 @@ const skillsData: SkillGroup[] = [
 			"NumPy",
 			"Pandas",
 			"Matplotlib",
+			"Scikit",
+			"Seaborn",
+			"NetworkX",
 			"Linear Algebra",
 			"Probability & Statistics"
 		]
@@ -48,6 +53,7 @@ const skillsData: SkillGroup[] = [
 		category: "Databases & Tools",
 		items: [
 			"SQL",
+			"PostgreSQL",
 			"Git",
 			"Linux CLI",
 			"Docker"
