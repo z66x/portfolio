@@ -11,11 +11,20 @@
 <style>
     header {
         position: fixed;
+        z-index: 66;
         width: min(100%, 1024px);
         top: 0;
         height: 3rem;
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid var(--secondary-color);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid transparent;
+        border-image: linear-gradient(
+            to right, 
+            transparent, 
+            var(--secondary-color) 10%, 
+            var(--secondary-color) 90%, 
+            transparent
+        ) 1;
         display: flex;
         align-items: center;
     }

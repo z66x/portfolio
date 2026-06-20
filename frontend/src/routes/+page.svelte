@@ -1,11 +1,37 @@
 <script lang="ts">
     import { featuredProjects, practiceProjects, skillsData } from '$lib';
     let practiceOpen = $state(false);
+    const glyphs = 'ABCDEFGHIJKLMNOUPQRSTUVXYZabcdefghijklmnoupqrstuvxyz0123456789@#$%&';
+
+    function scrambleText(event: MouseEvent) {
+      const target = event.currentTarget as HTMLElement;
+      const originalText = target.dataset.value || target.innerText;
+      if (!target.dataset.value) {
+          target.dataset.value = originalText;
+      }
+      let iteration = 0;
+      clearInterval((target as any).scrambleInterval);
+
+      (target as any).scrambleInterval = setInterval(() => {
+          target.innerText = originalText
+              .split("")
+              .map((letter, index) => {
+                  if (index < iteration) {
+                      return originalText[index];
+                  }
+                  return glyphs[Math.floor(Math.random() * glyphs.length)];
+              }).join("");
+          if (iteration >= originalText.length) {
+              clearInterval((target as any).scrambleInterval);
+          }
+          iteration += 0.2; 
+      }, 30);
+    }
 </script>
 
 <main>
 	<section id="bio">
-		<h1 id="name">Aparajith S</h1>
+		<h1 id="name" onmouseenter={scrambleText}>Aparajith S</h1>
 		<div id="info">
 			<p><i class="bi bi-geo-alt"></i> hyderabad, india</p>
             <p>
@@ -15,11 +41,10 @@
 		</div>
 		<p id="about_me">
 			hey there! i'm a 20 y/o data science & ai undergrad student.
-			i like building cool stuff with code — backend, web/app
-			dev, competitive programming and tricking computers
-			into thinking.
+      i like building cool stuff from scratch — ml models, backend systems and whatever sits in between.
+			also yeah, i do competitive programming!
 		</p>
-		<p id="skills-title">current skills,</p>
+		<p id="skills-title">skills acquired,</p>
 		<div id="skills">
 			{#each skillsData as group}
 				<div class="skill-group">
@@ -34,7 +59,7 @@
 		</div>
 	</section>
 
-    <section id="projects">
+  <section id="projects">
     <h1>projects</h1>
 
     <div id="featured">
@@ -80,9 +105,21 @@
 <style>
   main {
     margin-top: 3rem;
+    position: relative;
+    z-index: 1;
+  }
+  section {
+    padding: 1rem;
+    border-bottom: 1px solid transparent;
+    border-image: linear-gradient(
+        to right, 
+        transparent, 
+        var(--secondary-color) 20%, 
+        var(--secondary-color) 80%, 
+        transparent
+    ) 1;
   }
 
-  /* ── Bio ── */
   #bio {
     display: flex;
     flex-direction: column;
@@ -104,7 +141,6 @@
     margin-bottom: 1rem;
   }
 
-  /* ── Skills ── */
   #skills {
     display: grid;
     margin-top: 0.5rem;
@@ -130,18 +166,29 @@
     flex-wrap: wrap;
     gap: 0.5rem;
     padding: 0;
+    margin: 0;
   }
 
   .skill-items li {
     list-style: none;
     font-size: 0.8rem;
-    padding: 0.25rem 0.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.35rem 0.7rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     color: var(--secondary-color);
+    width: max-content; 
     transition: all 200ms ease;
   }
 
-  /* ── Projects ── */
+  .skill-items li:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: var(--primary-color);
+  }
+
   #projects h1 {
     font-size: 2rem;
     color: var(--accent-color);
@@ -155,16 +202,30 @@
   }
 
   .featured-card {
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
     padding: 1.2rem;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-    transition: border-color 200ms ease;
+    transition: 
+      background-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    
+    will-change: transform;
   }
 
   .featured-card:hover {
-    border-color: var(--accent-color);
+    transform: scale(1.01);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.24);
   }
 
   .card-top {
@@ -210,10 +271,11 @@
   }
 
   .tag {
-    font-size: 0.75rem;
-    padding: 0.2rem 0.5rem;
-    border: 1px solid rgba(0, 204, 221, 0.4);
-    color: var(--accent-color);
+    font-size: 0.72rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.03); 
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .practice-toggle {
@@ -238,18 +300,27 @@
     gap: 1rem;
   }
 
-  .project-tile {
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-  }
+.project-tile {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
 
-  .project-tile:hover {
-    border-color: rgba(255, 255, 255, 1);
-  }
+  transition: all 300ms ease;
+}
+
+.project-tile:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.01);
+}
 
   /* ── Responsive ── */
   @media (max-width: 768px) {

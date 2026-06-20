@@ -21,6 +21,9 @@
 </footer>
 
 <style>
+	section {
+		padding: 1rem;
+	}
     #connect h1 {
         font-size: 2rem;
         color: var(--accent-color);

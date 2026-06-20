@@ -15,14 +15,39 @@ body {
     --accent-color: #00ccdd;
     color: var(--primary-color);
 }
+body::before {
+    content: "";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    width: 200vw;
+    height: 200vh;
+    background: 
+        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 30% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 40%);
+    animation: waveFlow 25s infinite alternate ease-in-out;
+    z-index: -1;
+    pointer-events: none;
+}
+@keyframes waveFlow {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    50% {
+        transform: translate(-5%, 8%) rotate(10deg) scale(1);
+    }
+    100% {
+        transform: translate(4%, -5%) rotate(-5deg) scale(1);
+    }
+}
 a {
     text-decoration: none;
     color: var(--primary-color);
 }
 a:hover {
     color: var(--accent-color);
-}
-section {
-    padding: 1rem;
-    border-bottom: 1px solid var(--secondary-color);
 }
